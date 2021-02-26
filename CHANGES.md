@@ -1,12 +1,16 @@
-### 1.0.5
+# 1.0.6
+
+No changes. This is strictly a version bump release.
+
+# 1.0.5
 
 Bump `ffprobe` dependency to resolve CVE in `bl`
 
-### 1.0.4
+# 1.0.4
 
 Support XMP tags in PNGs
 
-### 1.0.3
+# 1.0.3
 
 Support photos exported from iPhoto where both JFIF and EXIF can be present (https://stackoverflow.com/questions/2697869/does-exif-metadata-always-get-stored-just-after-the-jfif-header)
 
