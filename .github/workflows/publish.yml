@@ -32,11 +32,11 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - name: Set release notes tag
         run: |
-          export RELEASE_TAG_VERSION=${{ github.event.release.tag_name }}
-          echo "RELEASE_TAG_VERSION=${RELEASE_TAG_VERSION}" >> $GITHUB_ENV
+          export RELEASE_NAME_VERSION=${{ github.event.release.name }}
+          echo "RELEASE_NAME_VERSION=${RELEASE_NAME_VERSION}" >> $GITHUB_ENV
       - name: Ensure new version is also set in CHANGES.md
         run: |
-          grep --regexp "${RELEASE_TAG_VERSION}" CHANGES.md
+          grep --regexp "${RELEASE_NAME_VERSION}" CHANGES.md
       - name: Setup
         run: |
           yarn
