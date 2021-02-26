@@ -63,12 +63,12 @@ const testFiles = (files) => describe.each(files)('fileName %s', (fileName, inFo
     const newFileHash = await hasha.fromFile(processedFile, {algorithm: 'sha256'})
     expect(cleanFileHash).toEqual(newFileHash)
   })
-  /* itif(mode === MODE_JPG)('image is not corrupted - JPG', async () => {
+  itif(mode === MODE_JPG)('image is not corrupted - JPG', async () => {
     await removeLocationFromFile(fileName, inFolder, outFolder)
     const fileIsCorrupted = isCorrupted(processedFile)
     expect(fileIsCorrupted).toEqual(false)
-  }) */
-  /* itif(MODE_IMG)('image is not corrupted - graphicsmagick check', async done => {
+  })
+  /*itif(MODE_IMG)('image is not corrupted - graphicsmagick check', async done => {
     await removeLocationFromFile(fileName, inFolder, outFolder)
     gm(processedFile).identify((err, data) => {
       expect(err).toBe(null)
@@ -85,14 +85,14 @@ const testFiles = (files) => describe.each(files)('fileName %s', (fileName, inFo
       expect(equality).toEqual(0.0)
       done()
     })
-  })
+  }) */
   it('ffprobe corruption check', async done => {
     await removeLocationFromFile(fileName, inFolder, outFolder)
     ffprobe(processedFile, { path: ffprobeStatic.path }, function (err, info) {
       expect(err).toEqual(null)
       done()
     })
-  }) */
+  })
 })
 
 const testFormat = (inFolder, outFolder, cleanFolder, testJpg) => {

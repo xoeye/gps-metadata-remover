@@ -37,7 +37,7 @@
   "scripts": {
     "build": "if [ -d lib ]; then rm lib/*; fi; yarn run babel src/ -d lib/ && flow-copy-source src lib",
     "prepublish": "yarn run build",
-    "test": "node --expose-gc ./node_modules/.bin/jest --runInBand --logHeapUsage",
+    "test": "jest",
     "test-multiple": "for i in {1..10}; do jest --runInBand --silent || (echo 'Failed after $i attempts' && break); done",
     "remove-metadata-batch": "node scripts/batchRemoveMetadata.js",
     "test:jenkins": "echo 'No Tests Implemented'"
