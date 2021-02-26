@@ -6,6 +6,10 @@ Exif from images and various forms of GPS metadata from videos.
 
 Currently compatible with JPG, PNG, TIF, MOV, MP4
 
+## Installation
+
+`yarn add @xoi/gps-metadata-remover` or `npm i @xoi/gps-metadata-remover`
+
 ## Usage
 
 `removeLocationStream` is the main removal function, although some other utility functions

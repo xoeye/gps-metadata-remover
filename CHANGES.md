@@ -1,3 +1,11 @@
+# 1.0.9
+
+Add metadata to point npm package back to our github repo.
+
+# 1.0.8
+
+Change package name to match XOi npm scope. No user facing changes.
+
 # 1.0.7
 
 No changes. This is strictly a version bump release.
