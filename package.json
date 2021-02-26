@@ -1,0 +1,45 @@
+{
+  "name": "xoi-gps-metadata-remover",
+  "version": "1.0.0",
+  "description": "Removes GPS metadata from images and videos",
+  "main": "lib/index.js",
+  "author": "alindner@xoi.io",
+  "license": "apache",
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "Base64": "^1.1.0",
+    "debug": "^4.1.1",
+    "ffprobe": "^1.1.0",
+    "ffprobe-static": "^3.0.0",
+    "jdataview": "^2.5.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.11.0",
+    "@babel/core": "^7.11.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.11.0",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/preset-flow": "^7.11.0",
+    "flow-bin": "^0.109.0",
+    "flow-copy-source": "^2.0.9",
+    "gm": "^1.23.1",
+    "hasha": "^5.2.0",
+    "is-corrupted-jpeg": "^1.0.2",
+    "jest": "^26.6.3",
+    "nodemon": "^2.0.7",
+    "prettier": "^1.18.2",
+    "prettier-eslint": "^9.0.0",
+    "prettier-eslint-cli": "^5.0.0",
+    "uuid": "^3.3.2"
+  },
+  "scripts": {
+    "build": "if [ -d lib ]; then rm lib/*; fi; yarn run babel src/ -d lib/ && flow-copy-source src lib",
+    "prepublish": "yarn run build",
+    "test": "node --expose-gc ./node_modules/.bin/jest --runInBand --logHeapUsage",
+    "test-multiple": "for i in {1..10}; do jest --runInBand --silent || (echo 'Failed after $i attempts' && break); done",
+    "remove-metadata-batch": "node scripts/batchRemoveMetadata.js",
+    "test:jenkins": "echo 'No Tests Implemented'"
+  }
+}
