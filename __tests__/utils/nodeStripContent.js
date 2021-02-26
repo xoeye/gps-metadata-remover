@@ -16,6 +16,9 @@ const removeLocationFromFile = async(fileName, sourceDirectory, destDirectory) =
   console.log('file name', fileName)
   const originalFilePath = sourceDirectory + fileName
   const tempFilePath = destDirectory + fileName
+  if (!fs.existsSync(destDirectory)){
+    fs.mkdirSync(destDirectory);
+  }
   await awaitableCopy(originalFilePath, tempFilePath)
   const fileDescriptor = await awaitableOpen(tempFilePath, 'r+')
   const read = async (size, offset) => {
