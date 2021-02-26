@@ -8,7 +8,7 @@ Currently compatible with JPG, PNG, TIF, MOV, MP4
 
 ## Installation
 
-`yarn add @xoi/gps-metadata-remover` or `npm install --save @xoi/gps-metadata-remover`
+`yarn add @xoi/gps-metadata-remover` or `npm i @xoi/gps-metadata-remover`
 
 ## Usage
 
