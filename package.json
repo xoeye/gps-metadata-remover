@@ -1,6 +1,6 @@
 {
-  "name": "xoi-gps-metadata-remover",
-  "version": "1.0.7",
+  "name": "@xoi/gps-metadata-remover",
+  "version": "1.0.8",
   "description": "Removes GPS metadata from images and videos",
   "main": "lib/index.js",
   "author": "alindner@xoi.io",
