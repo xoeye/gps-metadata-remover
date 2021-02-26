@@ -1,0 +1,57 @@
+name: Publish
+
+# RELEASE PROCESS
+#
+# === Manual ===
+#
+# 1. Document human readable changes in CHANGES
+# 2. Bump package version
+# 3. Create a PR to develop branch
+# 4. Edit the current draft release notes
+# 5. If not already set, use `v<new version>` as a tag, and select develop as target branch
+#
+# === Automated ===
+#
+# 1. Extract release notes tag that was published
+# 2. Ensure release notes tag match what's in CHANGES
+# 5. Publish package
+# 6. Push latest release source code to master using release title as the commit message
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '12.x'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Set release notes tag
+        run: |
+          export RELEASE_TAG_VERSION=${{ github.event.release.tag_name }}
+          echo "RELEASE_TAG_VERSION=${RELEASE_TAG_VERSION}" >> $GITHUB_ENV
+      - name: Ensure new version is also set in CHANGES.md
+        run: |
+          grep --regexp "${RELEASE_TAG_VERSION}" CHANGES.md
+      - name: Setup
+        run: |
+          yarn
+      - name: Build
+        run: |
+          yarn build
+      - name: Publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          yarn publish --access public
+  sync_main:
+    needs: upload
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Sync main from detached head
+        run: git push origin HEAD:refs/heads/main --force

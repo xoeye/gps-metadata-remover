@@ -1,0 +1,16 @@
+tests:
+  - __tests__/**/*
+
+core:
+  - src/**/*
+
+dependencies:
+  - yarn*
+  - package.json*
+
+internal:
+  - CHANGES.md
+  - LICENSE
+
+documentation:
+  - README.md
