@@ -1,3 +1,7 @@
+# 1.0.7
+
+No changes. This is strictly a version bump release.
+
 # 1.0.6
 
 No changes. This is strictly a version bump release.
