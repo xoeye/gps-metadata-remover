@@ -12,12 +12,12 @@ Currently compatible with JPG, PNG, TIF, MOV, MP4
 
 ## Usage
 
-`removeLocationStream` is the main removal function, although some other utility functions
+`removeLocation` is the main removal function, although some other utility functions
 are provided in the index to help read in data correctly if needed. This is how the package
 looks being used in react native with react-native-fs:
 
 ```javascript
-import { removeLocationStream, base64StringToArrayBuffer } from '@xoi/gps-metadata-remover'
+import { removeLocation, base64StringToArrayBuffer } from '@xoi/gps-metadata-remover'
 
 const read = async (size, offset) => {
   const base64Data = await rnfs.read(destPath, size, offset, 'base64')
@@ -26,10 +26,10 @@ const read = async (size, offset) => {
 const write = async (writeValue, entryOffset, encoding) => {
   await rnfs.write(destPath, writeValue, entryOffset, encoding)
 }
-const gpsWasRemoved = await removeLocationStream(destPath, read, write)
+const gpsWasRemoved = await removeLocation(destPath, read, write)
 ```
 
-`removeLocationStream` returns `true` if GPS metadata was found and rewritten and `false`
+`removeLocation` returns `true` if GPS metadata was found and rewritten and `false`
 if no GPS metadata was found and nothing was rewritten.
 
 This package is platform-agnostic, so the client is expected to pass in filesystem

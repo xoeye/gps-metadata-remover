@@ -10,7 +10,7 @@ function removeFileSlashPrefix(path: string): string {
   return path.replace(/^(file:\/\/)/, '')
 }
 
-export const removeLocationStream = async (photoUri: string, read: ReadFunction, write: WriteFunction): Promise<boolean> => {
+export const removeLocation = async (photoUri: string, read: ReadFunction, write: WriteFunction): Promise<boolean> => {
   const preparedUri = removeFileSlashPrefix(photoUri)
   return isVideo(preparedUri)
     ? await videoGpsMetadataRemoverSkip(read, write)

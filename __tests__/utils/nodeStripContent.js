@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const { removeLocationStream } = require('../../lib/index')
+const { removeLocation } = require('../../lib/index')
 const util = require('util') 
 const fs = require('fs')
 const awaitableOpen = util.promisify(fs.open)
@@ -31,7 +31,7 @@ const removeLocationFromFile = async(fileName, sourceDirectory, destDirectory) =
     const buffer = Buffer.alloc(writeValue.length, writeValue, encoding)
     await awaitableWrite(fileDescriptor, buffer, 0, writeValue.length, entryOffset)
   }
-  const locationRemoved = await removeLocationStream(tempFilePath, read, write)
+  const locationRemoved = await removeLocation(tempFilePath, read, write)
   if (locationRemoved) {
   console.log('found GPS, wrote stripped file to ', tempFilePath)
   } else {
