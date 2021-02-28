@@ -17,7 +17,7 @@ export const removeLocation = async (photoUri: string, read: ReadFunction, write
     : await imageGpsExifRemoverSkip(read, write)
 }
 
-/* export const arrayBufferToBase64 = (buffer: ArrayBuffer) => {
+export const arrayBufferToBase64 = (buffer: ArrayBuffer) => {
   let binary = ''
   const bytes = new Uint8Array(buffer)
   const len = bytes.byteLength
@@ -25,7 +25,7 @@ export const removeLocation = async (photoUri: string, read: ReadFunction, write
     binary += String.fromCharCode(bytes[i])
   }
   return base64.btoa(binary)
-} */
+}
 
 export const base64StringToArrayBuffer = async (base64String: string): Promise<Buffer> => {
   const binaryString = await base64.atob(base64String)
