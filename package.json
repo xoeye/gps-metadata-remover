@@ -49,5 +49,26 @@
     "test-multiple": "for i in {1..10}; do jest --runInBand --silent || (echo 'Failed after $i attempts' && break); done",
     "remove-metadata-batch": "node scripts/batchRemoveMetadata.js",
     "test:jenkins": "echo 'No Tests Implemented'"
-  }
+  },
+  "keywords": [
+    "exif",
+    "gps",
+    "metadata",
+    "jpeg",
+    "jpg",
+    "mp4",
+    "mov",
+    "png",
+    "tiff",
+    "erase",
+    "delete",
+    "remove",
+    "js",
+    "images",
+    "privacy",
+    "web",
+    "mobile",
+    "geolocation",
+    "location"
+  ]
 }
