@@ -1,5 +1,5 @@
 # `@xoi/gps-metadata-remover`
-> Javascript package that removes GPS metadata from images and videos
+> Frontend-friendly Javascript package that removes GPS metadata from images and videos
 
 Takes a photo or video file and writes over in-place where GPS metadata is detected. Removes
 Exif from images and various forms of GPS metadata from videos.
