@@ -1,6 +1,6 @@
 {
   "name": "@xoi/gps-metadata-remover",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Removes GPS metadata from images and videos",
   "repository": {
     "type": "git",
