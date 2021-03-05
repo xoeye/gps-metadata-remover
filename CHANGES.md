@@ -2,7 +2,7 @@
 
 -adds NPM keywords to help people actually find the package
 - Renames `removeLocationStream` to `removeLocation`. The former name was an artifact of an older version of this package, and since it doesn't stream anything anymore, I figured to take it out to avoid confusion.
--uncomment unused arrayBufferToBase64 helper function. it was commented out because we didn't need it but presumably some client might
+- Uncomments unused `arrayBufferToBase64` helper function. It was commented out because we didn't need it but presumably some client might.
 
 # 1.0.9
 
