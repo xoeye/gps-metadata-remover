@@ -3,3 +3,4 @@ lib/
 **/.DS_Store
 __tests__/images/**/processed
 yarn-error.log*
+.idea/
