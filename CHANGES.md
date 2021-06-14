@@ -1,3 +1,7 @@
+# 1.1.0
+- Removes logs from production builds
+- Makes removal of XMP metadata optional
+
 # 1.0.10
 
 - Adds NPM keywords to help people actually find the package.
