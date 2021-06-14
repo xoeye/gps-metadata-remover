@@ -47,7 +47,7 @@ export type WriteFunction = (writeValue: string, entryOffset: number, encoding: 
 
 One of the metadata formats from which this package removes metadata is Adobe's [XMP](https://www.adobe.com/products/xmp.html).
 
-Currently, if it finds XMP metadata in a file, this package simply wipes the whole of the XMP block rather than just the GPS; this code was originally written under a bit of a time crunch and removing all of the XMP was acceptable since we don't use XMP at all.
+Currently, if it finds XMP metadata in a file, this package simply wipes the whole of the XMP block rather than just the GPS metadata in that block; this code was originally written under a bit of a time crunch and removing all of the XMP was acceptable since we don't use XMP at all.
 
 If you need to leave XMP intact, pass the optional `options` parameter object to `removeLocation` with `skipXMPRemoval` set to `true`:
 
