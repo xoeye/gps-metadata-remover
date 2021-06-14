@@ -4,6 +4,9 @@ import base64 from 'Base64'
 
 export type ReadFunction = (size: number, offset: number) => Promise<Buffer>
 export type WriteFunction = (writeValue: string, entryOffset: number, encoding: string) => Promise<void>
+export type Options = {
+  skipXMPRemoval?: boolean
+}
 
 export const readNextChunkIntoDataView
 = async (size: number, offset: number, read: ReadFunction) => {
