@@ -43,7 +43,7 @@ export type ReadFunction = (size: number, offset: number) => Promise<Buffer>
 export type WriteFunction = (writeValue: string, entryOffset: number, encoding: string) => Promise<void>
 ```
 
-### XMP Removal
+#### XMP Removal
 
 One of the metadata formats from which this package removes metadata is Adobe's [XMP](https://www.adobe.com/products/xmp.html).
 
