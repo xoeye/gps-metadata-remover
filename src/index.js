@@ -1,7 +1,7 @@
 // @flow
 import { imageGpsExifRemoverSkip } from './imageGpsExifRemover'
 import { videoGpsMetadataRemoverSkip } from './videoGpsMetadataRemover'
-import type { ReadFunction, WriteFunction } from './gpsRemoverHelpers'
+import type { ReadFunction, WriteFunction, Options } from './gpsRemoverHelpers'
 import base64 from 'Base64'
 
 const isVideo = uri => /(mp4|m4v|webm|mov)/i.test(uri)
@@ -10,11 +10,13 @@ function removeFileSlashPrefix(path: string): string {
   return path.replace(/^(file:\/\/)/, '')
 }
 
-export const removeLocation = async (photoUri: string, read: ReadFunction, write: WriteFunction): Promise<boolean> => {
+export const removeLocation = async (photoUri: string, read: ReadFunction, write: WriteFunction, options: Options = {}): Promise<boolean> => {
+  const optionsWithDefaults = {skipXMPRemoval: false, ...options}
+  const { skipXMPRemoval } = optionsWithDefaults
   const preparedUri = removeFileSlashPrefix(photoUri)
   return isVideo(preparedUri)
-    ? await videoGpsMetadataRemoverSkip(read, write)
-    : await imageGpsExifRemoverSkip(read, write)
+    ? await videoGpsMetadataRemoverSkip(read, write, skipXMPRemoval)
+    : await imageGpsExifRemoverSkip(read, write, skipXMPRemoval)
 }
 
 export const arrayBufferToBase64 = (buffer: ArrayBuffer) => {

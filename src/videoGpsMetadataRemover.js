@@ -34,7 +34,7 @@ const wipeData = async (
 }
 
 export const videoGpsMetadataRemoverSkip
-= async (read: ReadFunction, write: WriteFunction): Promise<boolean> => {
+= async (read: ReadFunction, write: WriteFunction, skipXMPRemoval: boolean): Promise<boolean> => {
   console.log('preparing to read video skip...')
   let gpsTagFound = false
   let stopSearching = false
@@ -108,7 +108,7 @@ export const videoGpsMetadataRemoverSkip
       } else if (TAGS_TO_ENTER.includes(tagName)) {
         console.log('moov or udta tag found')
         offset += 8
-      } else if (tagName === UUID_TAG || tagName === XMP_TAG) {
+      } else if ((tagName === UUID_TAG || tagName === XMP_TAG) && !skipXMPRemoval) {
         // XMP is an alternative tag format pushed by adobe that can have gps
         // (can also be id'd by UUID atom)
         // we just want to wipe it

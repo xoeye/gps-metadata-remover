@@ -102,7 +102,7 @@ const findGPSinExifJpg
 }
 
 export const imageGpsExifRemoverSkip
-= async (read: ReadFunction, write: WriteFunction): Promise<boolean> => {
+= async (read: ReadFunction, write: WriteFunction, skipXMPRemoval: boolean): Promise<boolean> => {
   const fileTypeDataView = await readNextChunkIntoDataView(4, 0, read)
   const fileTypeTag = fileTypeDataView.getUint32(0)
   let offset = 0
@@ -126,7 +126,7 @@ export const imageGpsExifRemoverSkip
         = await readNextChunkIntoDataView(pngCurrentTagSize, offsetOfExifData, read)
         console.log('png exif view', exifDataView)
         removedGps = await findGPSinExifJpg(exifDataView, pngCurrentTagSize, offsetOfExifData, read, write)
-      } else if (pngCurrentTag === PNG_ITXT_TAG) {
+      } else if (pngCurrentTag === PNG_ITXT_TAG && !skipXMPRemoval) {
         console.log('found itxt in png')
         const offsetOfPotentialXMPTag = offset + 8
         if(pngCurrentTagSize >= PNG_XMP_TAG.length) {
