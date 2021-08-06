@@ -6,6 +6,8 @@ Exif from images and various forms of GPS metadata from videos.
 
 Currently compatible with JPG, PNG, TIF, MOV, MP4
 
+[![npm version](https://badge.fury.io/js/%40xoi%2Fgps-metadata-remover.svg)](https://badge.fury.io/js/%40xoi%2Fgps-metadata-remover)
+
 ## Installation
 
 `yarn add @xoi/gps-metadata-remover` or `npm i @xoi/gps-metadata-remover`
