@@ -24,6 +24,7 @@ on:
 jobs:
   upload:
     runs-on: ubuntu-latest
+    environment: npm
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -48,7 +49,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           yarn publish --access public
-  sync_main:
+  sync_main:  # The main branch is named "develop". We keep an additional "main" branch in sync with develop.
     needs: upload
     runs-on: ubuntu-latest
     steps:
