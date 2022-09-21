@@ -1,3 +1,6 @@
+# 1.1.1
+- Dependency Updates
+
 # 1.1.0
 - Removes logs from production builds
 - Makes removal of XMP metadata optional
