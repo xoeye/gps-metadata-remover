@@ -1,6 +1,6 @@
 {
   "name": "@xoi/gps-metadata-remover",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Removes GPS metadata from images and videos",
   "repository": {
     "type": "git",
@@ -48,8 +48,7 @@
     "prepublish": "yarn run build",
     "test": "jest",
     "test-multiple": "for i in {1..10}; do jest --runInBand --silent || (echo 'Failed after $i attempts' && break); done",
-    "remove-metadata-batch": "node scripts/batchRemoveMetadata.js",
-    "test:jenkins": "echo 'No Tests Implemented'"
+    "remove-metadata-batch": "node scripts/batchRemoveMetadata.js"
   },
   "keywords": [
     "exif",
