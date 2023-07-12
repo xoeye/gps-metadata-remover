@@ -49,10 +49,3 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           yarn publish --access public
-  sync_main:  # The main branch is named "develop". We keep an additional "main" branch in sync with develop.
-    needs: upload
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Sync main from detached head
-        run: git push origin HEAD:refs/heads/main --force
