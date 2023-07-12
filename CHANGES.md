@@ -1,3 +1,6 @@
+# v1.1.2
+- Dependency Updates
+
 # v1.1.1
 - Dependency Updates
 
