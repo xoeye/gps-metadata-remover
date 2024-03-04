@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import { removeLocation } from "../../src/index";
 import { promisify } from "util";
 import {
@@ -17,17 +15,6 @@ const awaitableWrite = promisify(_write);
 const awaitableCopy = promisify(copyFile);
 const awaitableUnlink = promisify(unlink);
 
-const fs = require("fs").promises; // Node.js File System module with Promise support
-
-async function writeFile(filePath, content) {
-  try {
-    await fs.writeFile(filePath, content, "utf8");
-    console.log("File written successfully");
-  } catch (error) {
-    console.error("Error writing file:", error);
-  }
-}
-
 async function toArrayBuffer(buffer) {
   const arrayBuffer = new ArrayBuffer(buffer.length);
   const view = new Uint8Array(arrayBuffer);
@@ -42,9 +29,6 @@ const removeLocationFromFile = async (
   sourceDirectory,
   destDirectory
 ) => {
-  //const dotIndex = sourcePath.lastIndexOf('.')
-  //const tempFileTag = '-noGPS'
-  // const tempFilePath = sourcePath.replace(new RegExp(`^(.{${dotIndex}})(.)`), `$1${tempFileTag}$2`)
   console.log("file name", fileName);
   const originalFilePath = sourceDirectory + fileName;
   const tempFilePath = destDirectory + fileName;
@@ -55,11 +39,8 @@ const removeLocationFromFile = async (
   const fileDescriptor = await awaitableOpen(tempFilePath, "r+");
   const read = async (size, offset) => {
     const buffer = Buffer.alloc(size);
-    const filePath = "./example.txt";
     await awaitableRead(fileDescriptor, buffer, 0, size, offset);
     const arrayBuffer = toArrayBuffer(buffer);
-    const content = `${JSON.stringify(arrayBuffer)}`;
-    writeFile(filePath, content);
     return arrayBuffer; // Return the ArrayBuffer directly
   };
   const write = async (writeValue, entryOffset, encoding) => {

@@ -1,5 +1,8 @@
 import { Buffer } from "buffer";
-export type ReadFunction = (size: number, offset: number) => Promise<Buffer>;
+export type ReadFunction = (
+  size: number,
+  offset: number
+) => Promise<ArrayBuffer>;
 
 export type WriteFunction = (
   writeValue: string,
