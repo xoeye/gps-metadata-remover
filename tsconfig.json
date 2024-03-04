@@ -1,0 +1,31 @@
+{
+  "include": ["./src/*.ts", "./src/*.tsx"],
+  "exclude": ["node_modules", "dist", "build", "src/*.js", "src/*.jsx"],
+  "compilerOptions": {
+    "target": "es5",
+    "module": "esnext",
+    "allowJs": true,
+    "checkJs": false,
+    "jsx": "react",
+    "declaration": true,
+    "sourceMap": true,
+    "outDir": "./build",
+    "rootDir": "./src",
+    "noEmit": true,
+    "strict": true,
+    "noImplicitAny": false,
+    "noImplicitThis": false,
+    "baseUrl": "./",
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "sourceRoot": "./",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noFallthroughCasesInSwitch": true
+  }
+}

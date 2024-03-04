@@ -4,3 +4,5 @@ lib/
 __tests__/images/**/processed
 yarn-error.log*
 .idea/
+dist/
+build/

@@ -1,8 +1,7 @@
-// @flow
 import { imageGpsExifRemoverSkip } from './imageGpsExifRemover'
 import { videoGpsMetadataRemoverSkip } from './videoGpsMetadataRemover'
 import type { ReadFunction, WriteFunction, Options } from './gpsRemoverHelpers'
-import base64 from 'Base64'
+import { base64 } from 'Base64'
 
 const isVideo = uri => /(mp4|m4v|webm|mov)/i.test(uri)
 
@@ -29,8 +28,8 @@ export const arrayBufferToBase64 = (buffer: ArrayBuffer) => {
   return base64.btoa(binary)
 }
 
-export const base64StringToArrayBuffer = async (base64String: string): Promise<Buffer> => {
-  const binaryString = await base64.atob(base64String)
+export const base64StringToArrayBuffer = async (base64String: string): Promise<Uint8Array> => {
+  const binaryString = atob(base64String)
   const len = binaryString.length
   const bytes = new Uint8Array(len)
   for (let i = 0; i < len; i++) {
