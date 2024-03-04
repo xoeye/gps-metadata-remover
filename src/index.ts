@@ -2,8 +2,19 @@ import { imageGpsExifRemoverSkip } from './imageGpsExifRemover'
 import { videoGpsMetadataRemoverSkip } from './videoGpsMetadataRemover'
 import type { ReadFunction, WriteFunction, Options } from './gpsRemoverHelpers'
 import { base64 } from 'Base64'
+import { Logger, LogLevel } from './logger'
 
-const isVideo = uri => /(mp4|m4v|webm|mov)/i.test(uri)
+// Set log level from an environment variable
+const logLevel = import.meta.env.LOG_LEVEL as LogLevel;
+console.log(`setting log level to ${logLevel}`)
+
+if (logLevel && LogLevel[logLevel]) { // Check if the provided log level is valid
+  Logger.currentLevel = logLevel;
+} else {
+  Logger.currentLevel = LogLevel.Info; // Default to Info if not specified or invalid
+}
+
+const isVideo = (uri: string) => /(mp4|m4v|webm|mov)/i.test(uri)
 
 function removeFileSlashPrefix(path: string): string {
   return path.replace(/^(file:\/\/)/, '')

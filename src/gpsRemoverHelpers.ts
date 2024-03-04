@@ -1,7 +1,4 @@
 import { Buffer } from "buffer";
-import { Logger } from "./logger";
-import { base64 } from "Base64";
-
 export type ReadFunction = (size: number, offset: number) => Promise<Buffer>;
 
 export type WriteFunction = (
@@ -25,7 +22,6 @@ export const readNextChunkIntoDataView = async (
 export const getEncodedWipeoutString = async (sizeToRemove: number) => {
   const wipeoutString = getWipeoutString(sizeToRemove);
   return Buffer.from(wipeoutString).toString("base64");
-  // return base64.btoa(wipeoutString);
 };
 
 export const getWipeoutString = (sizeToRemove: number) => {
