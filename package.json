@@ -17,17 +17,10 @@
     "build"
   ],
   "dependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.10.4",
     "Base64": "^1.1.0",
     "debug": "^4.1.1"
   },
   "devDependencies": {
-    "@babel/cli": "7.18.10",
-    "@babel/core": "^7.11.0",
-    "@babel/plugin-transform-modules-commonjs": "^7.11.0",
-    "@babel/preset-env": "^7.11.0",
-    "@babel/preset-flow": "^7.11.0",
-    "babel-plugin-transform-remove-console": "^6.9.4",
     "ffprobe": "^1.1.0",
     "ffprobe-static": "^3.1.0",
     "gm": "^1.23.1",
