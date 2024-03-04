@@ -9,6 +9,8 @@ import {
   existsSync,
   mkdirSync,
 } from "fs";
+import { Logger } from "../../src/logger";
+
 const awaitableOpen = promisify(open);
 const awaitableRead = promisify(_read);
 const awaitableWrite = promisify(_write);
@@ -29,7 +31,7 @@ const removeLocationFromFile = async (
   sourceDirectory,
   destDirectory
 ) => {
-  console.log("file name", fileName);
+  Logger.debug("file name", fileName);
   const originalFilePath = sourceDirectory + fileName;
   const tempFilePath = destDirectory + fileName;
   if (!existsSync(destDirectory)) {
@@ -55,9 +57,9 @@ const removeLocationFromFile = async (
   };
   const locationRemoved = await removeLocation(tempFilePath, read, write);
   if (locationRemoved) {
-    console.log("found GPS, wrote stripped file to ", tempFilePath);
+    Logger.info("found GPS, wrote stripped file to ", tempFilePath);
   } else {
-    console.log("no GPS found");
+    Logger.info("no GPS found");
     //await awaitableUnlink(tempFilePath)
   }
 };

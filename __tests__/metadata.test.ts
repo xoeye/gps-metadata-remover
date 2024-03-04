@@ -74,24 +74,6 @@ const testFiles = (files: readonly (any[] | [any])[]) =>
         const fileIsCorrupted = isCorrupted(processedFile);
         expect(fileIsCorrupted).toEqual(false);
       });
-      /*itif(MODE_IMG)('image is not corrupted - graphicsmagick check', async done => {
-    await removeLocationFromFile(fileName, inFolder, outFolder)
-    gm(processedFile).identify((err, data) => {
-      expect(err).toBe(null)
-      done()
-    })
-  }) */
-      /* itif(MODE_IMG)('isEqual - graphicsmagick check', async done => {
-    await removeLocationFromFile(fileName, inFolder, outFolder)
-    gm.compare(unprocessedFile, processedFile, function (err, isEqual, equality, raw) {
-      if (err) throw err;
-      //console.log('The images are equal: %s', isEqual)
-      //console.log('Actual equality: %d', equality)
-      //console.log('Raw output was: %j', raw)
-      expect(equality).toEqual(0.0)
-      done()
-    })
-  }) */
       it("ffprobe corruption check", async () => {
         await removeLocationFromFile(fileName, inFolder, outFolder);
         ffprobe(processedFile, { path: ffprobeStatic.path }, function(

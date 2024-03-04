@@ -6,12 +6,11 @@ import { Logger, LogLevel } from './logger'
 
 // Set log level from an environment variable
 const logLevel = import.meta.env.LOG_LEVEL as LogLevel;
-console.log(`setting log level to ${logLevel}`)
 
 if (logLevel && LogLevel[logLevel]) { // Check if the provided log level is valid
   Logger.currentLevel = logLevel;
 } else {
-  Logger.currentLevel = LogLevel.Info; // Default to Info if not specified or invalid
+  Logger.currentLevel = LogLevel.Debug; // Default to Info if not specified or invalid
 }
 
 const isVideo = (uri: string) => /(mp4|m4v|webm|mov)/i.test(uri)

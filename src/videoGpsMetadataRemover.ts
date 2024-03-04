@@ -24,13 +24,11 @@ const wipeData = async (
   read: ReadFunction,
   suppliedWipeoutString: string = ""
 ): Promise<void> => {
-  //NEXT LINES FOR DEBUG - take out
   const dataToWipe = await readNextChunkIntoDataView(
     sizeToRemove,
     offset,
     read
   );
-  // Logger.debug("data to wipe", dataToWipe.getString(sizeToRemove, 0));
   if (suppliedWipeoutString === "") {
     const encodedWipeoutString = await getEncodedWipeoutString(sizeToRemove);
     await write(encodedWipeoutString, offset, "base64");
@@ -59,7 +57,6 @@ export const videoGpsMetadataRemoverSkip = async (
       break;
     }
     if (dataView.byteLength >= 8) {
-      console.log(JSON.stringify(dataView.buffer));
       const tagLength = dataView.getUint32(0);
       const tagName = getString(dataView, 4, 4);
       Logger.debug("found tag", tagName, tagLength);

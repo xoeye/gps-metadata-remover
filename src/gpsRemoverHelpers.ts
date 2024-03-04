@@ -1,4 +1,6 @@
 import { Buffer } from "buffer";
+import { crc32 } from "crc";
+
 export type ReadFunction = (
   size: number,
   offset: number
@@ -27,9 +29,9 @@ export const getEncodedWipeoutString = async (sizeToRemove: number) => {
   return Buffer.from(wipeoutString).toString("base64");
 };
 
-export const getWipeoutString = (sizeToRemove: number) => {
-  return Array(sizeToRemove + 1).join(String.fromCharCode(0));
-};
+export function getWipeoutString(sizeToRemove: number): string {
+  return "\0".repeat(sizeToRemove);
+}
 
 export function getString(
   dataView: DataView,
