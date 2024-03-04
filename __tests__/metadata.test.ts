@@ -5,6 +5,7 @@ import isCorrupted from "is-corrupted-jpeg";
 import ffprobe from "ffprobe";
 import ffprobeStatic from "ffprobe-static";
 import { beforeEach, it, describe, vi, expect } from "vitest";
+import { Logger } from "../src/logger";
 
 const MODE_JPG = 0;
 const MODE_IMG_NON_JPG = 1;
@@ -55,8 +56,6 @@ const testFiles = (files: readonly (any[] | [any])[]) =>
   describe.each(files)(
     "fileName %s",
     (fileName, inFolder, outFolder, cleanFolder, mode) => {
-      const MODE_IMG = mode === MODE_IMG_NON_JPG || mode === MODE_JPG;
-      const unprocessedFile = inFolder + fileName;
       const processedFile = outFolder + fileName;
       const cleanFile = cleanFolder + fileName;
       it("consistently builds", async () => {
@@ -74,11 +73,11 @@ const testFiles = (files: readonly (any[] | [any])[]) =>
         const fileIsCorrupted = isCorrupted(processedFile);
         expect(fileIsCorrupted).toEqual(false);
       });
-      it("ffprobe corruption check", async () => {
+      it("ffprobe corruption check", async (done) => {
         await removeLocationFromFile(fileName, inFolder, outFolder);
         ffprobe(processedFile, { path: ffprobeStatic.path }, function(
-          err,
-          info
+          err: any,
+          info: any
         ) {
           expect(err).to.be.null;
         });
@@ -86,11 +85,16 @@ const testFiles = (files: readonly (any[] | [any])[]) =>
     }
   );
 
-const testFormat = (inFolder, outFolder, cleanFolder, testJpg) => {
+const testFormat = (
+  inFolder: string,
+  outFolder: string,
+  cleanFolder: string,
+  testJpg: number
+) => {
   const files = fs.readdirSync(inFolder);
   const testObjects = files
-    .filter((file) => file !== ".DS_Store")
-    .map((file) => [file, inFolder, outFolder, cleanFolder, testJpg]);
+    .filter((file: string) => file !== ".DS_Store")
+    .map((file: any) => [file, inFolder, outFolder, cleanFolder, testJpg]);
 
   testFiles(testObjects);
 };
