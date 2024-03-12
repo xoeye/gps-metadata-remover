@@ -1,10 +1,19 @@
-// @flow
 import { imageGpsExifRemoverSkip } from './imageGpsExifRemover'
 import { videoGpsMetadataRemoverSkip } from './videoGpsMetadataRemover'
 import type { ReadFunction, WriteFunction, Options } from './gpsRemoverHelpers'
-import base64 from 'Base64'
+import { base64 } from 'Base64'
+import { Logger, LogLevel } from './logger'
 
-const isVideo = uri => /(mp4|m4v|webm|mov)/i.test(uri)
+// Set log level from an environment variable
+const logLevel = import.meta.env.LOG_LEVEL as LogLevel;
+
+if (logLevel && LogLevel[logLevel]) { // Check if the provided log level is valid
+  Logger.currentLevel = logLevel;
+} else {
+  Logger.currentLevel = LogLevel.Debug; // Default to Info if not specified or invalid
+}
+
+const isVideo = (uri: string) => /(mp4|m4v|webm|mov)/i.test(uri)
 
 function removeFileSlashPrefix(path: string): string {
   return path.replace(/^(file:\/\/)/, '')
@@ -29,8 +38,8 @@ export const arrayBufferToBase64 = (buffer: ArrayBuffer) => {
   return base64.btoa(binary)
 }
 
-export const base64StringToArrayBuffer = async (base64String: string): Promise<Buffer> => {
-  const binaryString = await base64.atob(base64String)
+export const base64StringToArrayBuffer = async (base64String: string): Promise<Uint8Array> => {
+  const binaryString = atob(base64String)
   const len = binaryString.length
   const bytes = new Uint8Array(len)
   for (let i = 0; i < len; i++) {

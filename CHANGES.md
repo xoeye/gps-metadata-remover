@@ -1,3 +1,11 @@
+# v2.0.0
+- Dependency Updates
+  - Removes jDataView dependency, DataView is stable now
+
+- Switch to Typescript
+- Switch to vite + vitest
+- Use Logger instead of console.log
+
 # v1.1.2
 - Dependency Updates
 

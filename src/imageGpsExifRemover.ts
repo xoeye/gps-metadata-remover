@@ -1,8 +1,8 @@
-// @flow
 /* eslint-disable no-await-in-loop */
 
 import { readNextChunkIntoDataView, getEncodedWipeoutString, getWipeoutString } from './gpsRemoverHelpers'
 import type { ReadFunction, WriteFunction } from './gpsRemoverHelpers'
+
 
 const EXIF_ASCII_TAG_JPEG = 0x45786966
 const EXIF_ASCII_TAG_PNG = 0x65584966
@@ -17,27 +17,29 @@ const END_OF_PNG_TAG = 0x49454e44
 const PNG_ITXT_TAG = 0x69545874
 const PNG_XMP_TAG = 'XML:com.adobe.xmp'
 
+import { Logger } from './logger'
+import { getString } from './gpsRemoverHelpers'
 
-const killGPS
-= async (startOffset: number, littleEndian: boolean, read: ReadFunction, write: WriteFunction) => {
+
+const killGPS = async (startOffset: number, littleEndian: boolean, read: ReadFunction, write: WriteFunction) => {
   const entryNumberDataView = await readNextChunkIntoDataView(2, startOffset, read)
   const entries = entryNumberDataView.getUint16(0, littleEndian)
   const entryOffset = startOffset + 2
   // kill 'em all
-  console.log('writing 0s on gps data...', entries, entryOffset)
+  Logger.debug('writing 0s on gps data...', entries, entryOffset)
   const bytesToWipe = entries * 12
   const encodedWipeoutString = await getEncodedWipeoutString(bytesToWipe)
   await write(encodedWipeoutString, entryOffset, 'base64')
 }
 
 const readTag = async (offset: number, littleEndian: boolean, read: ReadFunction) => {
-  console.log('preparing to read tag')
+  Logger.debug('preparing to read tag')
   const tagDataView = await readNextChunkIntoDataView(12, offset, read)
   const tag = tagDataView.getUint16(0, littleEndian)
   const type = tagDataView.getUint16(2, littleEndian)
   const numValues = tagDataView.getUint32(4, littleEndian)
   const valueOffset = tagDataView.getUint32(8, littleEndian)
-  console.log('read tag', tag, type, numValues, valueOffset)
+  Logger.debug('read tag', tag, type, numValues, valueOffset)
   return {
     tag,
     type,
@@ -54,13 +56,13 @@ const findGPSTagInTags = async(startOffset: number, littleEndian: boolean, read:
   const exifEntriesDataView = await readNextChunkIntoDataView(2, startOffset, read)
   const entries = exifEntriesDataView.getUint16(0, littleEndian)
   const tagsOffset = startOffset + 2
-  console.log('# of exif entries', entries)
+  Logger.debug('# of exif entries', entries)
   for(let i = 0; i < entries; i++) {
     const currentTag = await readTag((tagsOffset+i*12), littleEndian, read)
     if(currentTag.tag === GPS_EXIF_TAG
         && currentTag.type === 4
         && currentTag.numValues === 1) {
-          console.log('gps tag found', startOffset, currentTag.valueOffset)
+          Logger.debug('gps tag found', startOffset, currentTag.valueOffset)
           return currentTag.valueOffset
         }
   }
@@ -83,15 +85,15 @@ const findGPSinExifTiff = async (
 
 const findGPSinExifJpg
 = async (
-    exifDataView,
+    exifDataView: DataView,
     size: number,
     masterOffset: number,
     read: ReadFunction,
     write: WriteFunction
   ) => {
-  console.log('exifDataView', exifDataView, size)
+  Logger.debug('exifDataView', exifDataView, size)
   const littleEndian = isLittleEndian(exifDataView)
-  console.log('isLittleEndian?', littleEndian, exifDataView.getUint32(0))
+  Logger.debug('isLittleEndian?', littleEndian, exifDataView.getUint32(0))
   const gpsOffset = await findGPSTagInTags(masterOffset + 8, littleEndian, read)
   if (gpsOffset >= 0) {
     await killGPS(gpsOffset + masterOffset, littleEndian, read, write)
@@ -108,32 +110,31 @@ export const imageGpsExifRemoverSkip
   let offset = 0
   let removedGps = false
   if (fileTypeTag === PNG_TAG) {
-    console.log('png identified')
+    Logger.debug('png identified')
     offset += 8
     let pngCurrentTagSize = 0
-    let pngCurrentTag = ''
+    let pngCurrentTag = 0
     while (pngCurrentTag !== END_OF_PNG_TAG) {
       const pngTagDataView = await readNextChunkIntoDataView(8, offset, read)
-      console.log('png tag data view', pngTagDataView, offset)
+      Logger.debug('png tag data view', pngTagDataView, offset)
       pngCurrentTagSize = pngTagDataView.getUint32(0)
       pngCurrentTag = pngTagDataView.getUint32(4)
-      console.log('current png tag', pngCurrentTagSize, pngCurrentTag)
+      Logger.debug('current png tag', pngCurrentTagSize, pngCurrentTag)
 
       if (pngCurrentTag === EXIF_ASCII_TAG_PNG) {
-        console.log('found exif in png')
+        Logger.debug('found exif in png')
         const offsetOfExifData = offset + 8
-        const exifDataView
-        = await readNextChunkIntoDataView(pngCurrentTagSize, offsetOfExifData, read)
-        console.log('png exif view', exifDataView)
+        const exifDataView = await readNextChunkIntoDataView(pngCurrentTagSize, offsetOfExifData, read)
+        Logger.info('png exif view', JSON.stringify(exifDataView))
         removedGps = await findGPSinExifJpg(exifDataView, pngCurrentTagSize, offsetOfExifData, read, write)
       } else if (pngCurrentTag === PNG_ITXT_TAG && !skipXMPRemoval) {
-        console.log('found itxt in png')
+        Logger.info('found itxt in png')
         const offsetOfPotentialXMPTag = offset + 8
         if(pngCurrentTagSize >= PNG_XMP_TAG.length) {
           const XMPTagDataView = await readNextChunkIntoDataView(PNG_XMP_TAG.length, offsetOfPotentialXMPTag, read)
-          const potentialXMPTag = XMPTagDataView.getString(PNG_XMP_TAG.length, 0)
+          const potentialXMPTag = getString(XMPTagDataView, 0, PNG_XMP_TAG.length)
           if(potentialXMPTag === PNG_XMP_TAG) {
-            console.log('wiping png XMP metadata')
+            Logger.info('wiping png XMP metadata')
             const wipeoutString = getWipeoutString(pngCurrentTagSize)
             await write(wipeoutString, offsetOfPotentialXMPTag, 'ascii')
             removedGps = true
@@ -147,7 +148,7 @@ export const imageGpsExifRemoverSkip
       }
     }
   } else if (fileTypeTag === JPEG_TAG_EXIF || fileTypeTag === JPEG_TAG_JFIF) {
-    console.log('jpg identified - exif or jfif')
+    Logger.debug('jpg identified - exif or jfif')
     offset += 4
     if (fileTypeTag === JPEG_TAG_JFIF) {
       const jfifHeaderDataView = await readNextChunkIntoDataView(2, offset, read)
@@ -165,7 +166,7 @@ export const imageGpsExifRemoverSkip
     const sizeOfExifData = exifHeaderDataView.getUint16(0)
     const exifTag = exifHeaderDataView.getUint32(2)
     if (exifTag === EXIF_ASCII_TAG_JPEG) {
-      console.log('sanity checked and confirmed presence of exif', offset)
+      Logger.debug('sanity checked and confirmed presence of exif', offset)
       // 2 byte size + 4 byte 'Exif' + 2 empty bytes
       offset += 8
       const exifDataView = await readNextChunkIntoDataView(sizeOfExifData, offset, read)
@@ -176,9 +177,9 @@ export const imageGpsExifRemoverSkip
     const littleEndian = isLittleEndian(fileTypeDataView)
     offset += 4
     const tiffExifOffsetDataView = await readNextChunkIntoDataView(4, offset, read)
-    console.log('tiff data view', tiffExifOffsetDataView)
+    Logger.debug('tiff data view', tiffExifOffsetDataView)
     const tiffExifOffset = tiffExifOffsetDataView.getUint32(0, littleEndian)
-    console.log('tiff exif offset', tiffExifOffset)
+    Logger.debug('tiff exif offset', tiffExifOffset)
     offset = tiffExifOffset
     removedGps = await findGPSinExifTiff(offset, read, write, littleEndian)
   }
